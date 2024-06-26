@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure SQL Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+
+    
+    <h1>Data from Azure SQL Database</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <!-- Add table headers here -->
+                <th>IncidentID</th>
+                <th>ResponderID</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/data');
+                const data = await response.json();
+
+                const tableBody = document.getElementById('data-table').querySelector('tbody');
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    Object.values(row).forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error('Error fetching data:', err);
+            }
+        }
+
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
